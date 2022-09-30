@@ -1,3 +1,2 @@
 # Tokenised_payment
-Creating a payment system
-Team Name: The Dogefather
+Intra-college Tokenised Payment System
