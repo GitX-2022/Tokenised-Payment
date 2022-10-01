@@ -6,7 +6,7 @@ import "./styles.css"
 function App() {
   const [accounts, setAccounts] = useState(null);
   const [balance, setBalance] = useState(null);
-  
+
   useEffect(() => {
     if (window.ethereum !== "undefined") {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
@@ -68,8 +68,59 @@ function App() {
 
   const sendTransaction = async (e) => {
     e.preventDefault();
-    
+    const provider = await detectEthereumProvider();
 
+    if (!provider) {
+      console.log("No provider detected");
+      return;
+    } else {
+      console.log(provider);
+    }
+
+    let Web3Client = new Web3(provider);
+
+    let tokenAddress = "0xE3E8b36dCEA6ABa09cAdca6Cb06724D6dC9C5E1d";
+    let toAddress = "0x2C154049dF236a281fc1BF400564c60F2FcA2042";
+    let fromAddress = accounts[0];
+
+    let decimals = Web3.utils.toBN(0);
+    let amount = Web3.utils.toBN(20);
+
+    let minABI = [
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_to",
+            "type": "address"
+          },
+          {
+            "name": "_value",
+            "type": "uint256"
+          }
+        ],
+        "name": "transfer",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "type": "function"
+      }
+    ];
+
+    let contract = new Web3Client.eth.Contract(minABI, tokenAddress, { from: fromAddress });
+
+    let value = 25;
+
+    let a = contract.methods
+      .transfer(toAddress, value).call()
+      .then((res) => {
+        console.log(res);
+        // setBalance(res);
+      })
+      .catch((err) => console.log(err));;
   }
 
   return (
