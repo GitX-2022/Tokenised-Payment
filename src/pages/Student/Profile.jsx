@@ -83,6 +83,16 @@ const Profile = () => {
         </div>
       </section>
       <h2><b>Balance: </b>{bal} PSG Coins</h2>
+      <section className="py-16">
+        <div className="flex items-center space-x-4">
+          <button className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
+            Order Food from Canteen
+          </button>
+          <button className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
+            Buy from Book Depot
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
