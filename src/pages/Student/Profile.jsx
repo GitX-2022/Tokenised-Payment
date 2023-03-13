@@ -7,6 +7,7 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [addr, setAddr] = useState("");
   const [roll, setRoll] = useState("");
+  const [conn, setConn] = useState(false);
   const [bal, setBal] = useState(0);
 
   useEffect(() => {
@@ -16,21 +17,24 @@ const Profile = () => {
       })
       .then((res) => {
         axios
-          .get(`http://localhost:8080/api/user/address/${res}`)
+          .get(`http://localhost:5050/api/user/address/${res}`)
           .then((resp) => {
             console.log(resp.data);
             setName(resp.data.name);
             setAddr(resp.data.wallet_address);
             setRoll(resp.data.rollno);
+            setConn(true);
           })
           .catch((err) => {
             console.log(err);
           });
       });
-  }, []);
+    if (conn) {
+      checkBalance();
+    }
+  });
 
   const checkBalance = async (e) => {
-    e.preventDefault();
     const provider = await detectEthereumProvider();
 
     if (!provider) {
@@ -60,7 +64,6 @@ const Profile = () => {
       .balanceOf(walletAddress)
       .call()
       .then((res) => {
-        console.log(res);
         setBal(res);
       })
       .catch((err) => console.log(err));
@@ -75,16 +78,13 @@ const Profile = () => {
       <h2><b>Account Address: </b>{addr}</h2>
       <br></br>
       <h2><b>Roll No: </b>{roll}</h2>
-      <section className="py-16">
-        <div className="flex items-center space-x-4">
-          <button onClick={(e) => checkBalance(e)} className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
-            Check Balance
-          </button>
-        </div>
-      </section>
+      <br></br>
       <h2><b>Balance: </b>{bal} PSG Coins</h2>
       <section className="py-16">
         <div className="flex items-center space-x-4">
+          <button onClick={(e) => checkBalance(e)} className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
+            Update Balance
+          </button>
           <button className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
             Order Food from Canteen
           </button>

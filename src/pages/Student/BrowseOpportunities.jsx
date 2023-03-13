@@ -6,7 +6,7 @@ const BrowseOpportunities = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/event")
+      .get("http://localhost:5050/api/event")
       .then((res) => {
         console.log(res.data);
         setEvents(res.data);
@@ -21,7 +21,7 @@ const BrowseOpportunities = () => {
       <h1 className="font-semibold text-4xl text-black mb-16">
         Browse Opportunities
       </h1>
-      <section className="w-3/4 space-y-6 ">
+      <section className="w-3/5 space-y-6 ">
         {events.length <= 0 ? (
           <div>Loading...</div>
         ) : (

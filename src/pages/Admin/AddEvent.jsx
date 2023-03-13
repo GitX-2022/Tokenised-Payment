@@ -14,6 +14,14 @@ const AddEvent = () => {
     setDate(0);
   }
 
+  const publish = (e) => {
+    if (ename !== "" && edesc !== "" && tokens !== 0 && date !== 0) {
+      alert("Event Details Published");
+    } else {
+      alert("Enter Valid Details");
+    }
+  }
+
   return (
     <div className="w-full bg-white px-12 py-16">
       <h1 className="font-semibold text-4xl text-black">
@@ -53,7 +61,7 @@ const AddEvent = () => {
       </section>
       <section className="py-16">
         <div className="flex items-center space-x-4">
-          <button className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
+          <button onClick={(e) => publish(e)} className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
             Publish
           </button>
 

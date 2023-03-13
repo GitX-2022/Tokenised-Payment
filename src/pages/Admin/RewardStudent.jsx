@@ -5,55 +5,67 @@ import Web3 from "web3";
 
 const RewardStudent = () => {
   const [rollno, setRollno] = useState("");
+  const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
   const [addr, setAddr] = useState("");
 
   const sendTransaction = async (e) => {
     e.preventDefault();
 
-    let tokenAddress = "0xE3E8b36dCEA6ABa09cAdca6Cb06724D6dC9C5E1d";
-    axios.get(`http://localhost:8080/api/user/rollno/${rollno}`)
-      .then((resp) => {
-        setAddr(resp.data.wallet_address);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    let toAddress = addr;
+    if (rollno === "") {
+      alert("Enter Valid Details");
+    } else {
+      let tokenAddress = "0xE3E8b36dCEA6ABa09cAdca6Cb06724D6dC9C5E1d";
+      axios.get(`http://localhost:5050/api/user/rollno/${rollno}`)
+        .then((resp) => {
+          setAddr(resp.data.wallet_address);
+          setName(resp.data.name);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      let toAddress = addr;
 
-    function getDataFieldValue(tokenRecipientAddress, tokenAmount) {
-      const web3 = new Web3();
-      const TRANSFER_FUNCTION_ABI = {
-        constant: false,
-        inputs: [
-          { name: "_to", type: "address" },
-          { name: "_value", type: "uint256" },
-        ],
-        name: "transfer",
-        outputs: [],
-        payable: false,
-        stateMutability: "nonpayable",
-        type: "function",
-      };
-      return web3.eth.abi.encodeFunctionCall(TRANSFER_FUNCTION_ABI, [
-        tokenRecipientAddress,
-        tokenAmount,
-      ]);
+      function getDataFieldValue(tokenRecipientAddress, tokenAmount) {
+        const web3 = new Web3();
+        const TRANSFER_FUNCTION_ABI = {
+          constant: false,
+          inputs: [
+            { name: "_to", type: "address" },
+            { name: "_value", type: "uint256" },
+          ],
+          name: "transfer",
+          outputs: [],
+          payable: false,
+          stateMutability: "nonpayable",
+          type: "function",
+        };
+        return web3.eth.abi.encodeFunctionCall(TRANSFER_FUNCTION_ABI, [
+          tokenRecipientAddress,
+          tokenAmount,
+        ]);
+      }
+
+      await window.ethereum
+        .request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: "0xddCDCE51A529c4F6e2Db62e29bA30eED434941F9",
+              to: tokenAddress,
+              data: getDataFieldValue(toAddress, amount),
+            },
+          ],
+        })
+        .then((result) => {
+          console.log(result);
+          alert(`${name} awarded with ${amount} coins`);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Transaction Denied");
+        });
     }
-
-    await window.ethereum
-      .request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: "0xddCDCE51A529c4F6e2Db62e29bA30eED434941F9",
-            to: tokenAddress,
-            data: getDataFieldValue(toAddress, amount),
-          },
-        ],
-      })
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
   }
 
   const clr = (e) => {
