@@ -21,7 +21,7 @@ const BrowseOpportunities = () => {
       <h1 className="font-semibold text-4xl text-black mb-16">
         Browse Opportunities
       </h1>
-      <section className="w-3/5 space-y-6 ">
+      <section className="w-4/5 space-y-6 ">
         {events.length <= 0 ? (
           <div>Loading...</div>
         ) : (
@@ -35,7 +35,7 @@ const BrowseOpportunities = () => {
                     </h1>
                     <p className="text-gray-500">{event.description}</p>
                   </div>
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end w-1/4">
                     <p className="font-bold text-3xl text-right">
                       {event.prize}
                       <span className="text-gray-600 text-base">{"  "}PC</span>

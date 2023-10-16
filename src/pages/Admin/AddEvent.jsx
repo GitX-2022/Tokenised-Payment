@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Inputfield from "../../components/CustomTextInput";
+import axios from "axios";
 
 const AddEvent = () => {
   const [ename, setEname] = useState("");
@@ -16,7 +17,21 @@ const AddEvent = () => {
 
   const publish = (e) => {
     if (ename !== "" && edesc !== "" && tokens !== 0 && date !== 0) {
-      alert("Event Details Published");
+      axios.post("http://localhost:5050/api/event/add", {
+        name: ename,
+        description: edesc,
+        prize: tokens,
+        date: date
+      })
+        .then((res) => {
+          console.log(res);
+          alert("Event Details Published");
+          clr(e);
+        }
+        )
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       alert("Enter Valid Details");
     }

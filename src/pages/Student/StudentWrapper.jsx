@@ -15,7 +15,7 @@ const StudentWrapper = () => {
           { name: "Transaction Log", path: "/student/transaction-log" },
         ]}
       />
-      <div className="w-4/5 h-screen">
+      <div className="w-4/5 h-screen overflow-auto">
         <Outlet />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoLight from "../assets/logo-light1.png";
 
@@ -7,8 +7,7 @@ const NavBar = ({ options }) => {
   const [accounts, setAccounts] = useState(null);
   const [conn, setConn] = useState("Connect Wallet");
 
-  const connectWallet = async (e) => {
-    e.preventDefault();
+  const connectWallet = async () => {
     let accounts = await window.ethereum
       .request({ method: "eth_requestAccounts" })
       .catch((err) => {
@@ -18,17 +17,21 @@ const NavBar = ({ options }) => {
         }
       });
     setAccounts(accounts);
+    console.log(accounts);
 
     if (accounts) {
       axios.get(`http://localhost:5050/api/user/address/${accounts[0]}`)
         .then((res) => {
           console.log(res);
-          alert(res.data.name + " Wallet Connected");
+          setConn(res.data.name + " Wallet Connected");
         })
-      setConn("Wallet Connected")
     }
 
   }
+
+  useEffect(() => {
+    connectWallet();
+  }, []);
 
   return (
     <div className="w-1/5 bg-gradient-to-br from-red-500 to-red-800 h-screen flex flex-col">

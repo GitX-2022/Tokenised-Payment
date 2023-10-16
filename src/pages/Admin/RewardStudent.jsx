@@ -15,7 +15,8 @@ const RewardStudent = () => {
     if (rollno === "") {
       alert("Enter Valid Details");
     } else {
-      let tokenAddress = "0xE3E8b36dCEA6ABa09cAdca6Cb06724D6dC9C5E1d";
+      // let tokenAddress = "0xE3E8b36dCEA6ABa09cAdca6Cb06724D6dC9C5E1d";
+      let tokenAddress = process.env.REACT_APP_TOKEN_ADDRESS;
       axios.get(`http://localhost:5050/api/user/rollno/${rollno}`)
         .then((resp) => {
           setAddr(resp.data.wallet_address);
@@ -51,7 +52,8 @@ const RewardStudent = () => {
           method: "eth_sendTransaction",
           params: [
             {
-              from: "0xddCDCE51A529c4F6e2Db62e29bA30eED434941F9",
+              // from: "0xddCDCE51A529c4F6e2Db62e29bA30eED434941F9",
+              from: process.env.REACT_APP_ADMIN_ADDRESS,
               to: tokenAddress,
               data: getDataFieldValue(toAddress, amount),
             },
@@ -59,7 +61,7 @@ const RewardStudent = () => {
         })
         .then((result) => {
           console.log(result);
-          alert(`${name} awarded with ${amount} coins`);
+          alert(`Transaction initiated: ${name} awarded with ${amount} coins`);
         })
         .catch((error) => {
           console.log(error);
