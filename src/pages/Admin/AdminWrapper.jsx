@@ -8,6 +8,7 @@ const AdminWrapper = () => {
       <NavBar
         options={[
           { name: "Add Event", path: "/admin/add-event" },
+          { name: "Add Student", path: "/admin/add-student" },
           { name: "Reward Student", path: "/admin/reward-student" },
           { name: "Transaction Log", path: "/admin/transaction-log" },
         ]}

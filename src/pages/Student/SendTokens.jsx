@@ -1,13 +1,25 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Inputfield from "../../components/CustomTextInput";
 import Web3 from "web3";
 
-const RewardStudent = () => {
+const SendTokens = () => {
   const [rollno, setRollno] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0);
-  const [addr, setAddr] = useState("");
+  const [toAddr, setToAddr] = useState("");
+  const [fromAddr, setFromAddr] = useState("");
+
+  useEffect(() => {
+    window.ethereum
+      .request({
+        method: "eth_requestAccounts",
+      })
+      .then((res) => {
+        console.log(res);
+        setFromAddr(res[0]);
+      });
+  });
 
   const sendTransaction = async (e) => {
     e.preventDefault();
@@ -19,7 +31,7 @@ const RewardStudent = () => {
       let tokenAddress = process.env.REACT_APP_TOKEN_ADDRESS;
       axios.get(`http://localhost:5050/api/user/rollno/${rollno}`)
         .then((resp) => {
-          setAddr(resp.data.wallet_address);
+          setToAddr(resp.data.wallet_address);
           setName(resp.data.name);
         })
         .catch((err) => {
@@ -27,7 +39,7 @@ const RewardStudent = () => {
           console.log(err);
           return;
         });
-      let toAddress = addr;
+      let toAddress = toAddr;
 
       function getDataFieldValue(tokenRecipientAddress, tokenAmount) {
         const web3 = new Web3();
@@ -54,8 +66,7 @@ const RewardStudent = () => {
           method: "eth_sendTransaction",
           params: [
             {
-              // from: "0xddCDCE51A529c4F6e2Db62e29bA30eED434941F9",
-              from: process.env.REACT_APP_ADMIN_ADDRESS,
+              from: fromAddr,
               to: tokenAddress,
               data: getDataFieldValue(toAddress, amount),
             },
@@ -63,7 +74,7 @@ const RewardStudent = () => {
         })
         .then((result) => {
           console.log(result);
-          alert(`Transaction initiated: ${name} rewarded with ${amount} coins`);
+          alert(`Transaction initiated: ${amount} coins sending to ${name} `);
         })
         .catch((error) => {
           console.log(error);
@@ -80,7 +91,7 @@ const RewardStudent = () => {
   return (
     <div className="w-full bg-white px-12 py-16">
       <h1 className="font-semibold text-4xl text-black mb-16">
-        Reward Student
+        Send Tokens
       </h1>
       <section className="w-3/4 space-y-6">
         <div className="flex space-x-4 items-center justify-center w-full">
@@ -102,7 +113,7 @@ const RewardStudent = () => {
       <section className="py-16">
         <div className="flex items-center space-x-4">
           <button onClick={(e) => sendTransaction(e)} className="w-fit px-8 py-2 text-lg bg-red-500 text-white font-semibold rounded-lg shadow-lg">
-            Reward
+            Send
           </button>
 
           <button onClick={(e) => clr(e)} className="w-fit px-8 py-2 text-lg border-red-500 text-red-500 border-2  font-semibold rounded-lg shadow-lg">
@@ -114,4 +125,4 @@ const RewardStudent = () => {
   );
 };
 
-export default RewardStudent;
+export default SendTokens;

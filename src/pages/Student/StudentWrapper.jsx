@@ -8,6 +8,7 @@ const StudentWrapper = () => {
       <NavBar
         options={[
           { name: "View Profile", path: "/student/view-profile" },
+          { name: "Send Tokens", path: "/student/send-tokens" },
           {
             name: "Browse Opportunities",
             path: "/student/browse-opportunities",

@@ -15,6 +15,8 @@ import TransactionLog from "./pages/Admin/TransactionLog";
 import StudentWrapper from "./pages/Student/StudentWrapper";
 import Profile from "./pages/Student/Profile";
 import BrowseOpportunities from "./pages/Student/BrowseOpportunities";
+import AddStudent from "./pages/Admin/AddStudent";
+import SendTokens from "./pages/Student/SendTokens";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
       <Routes>
         <Route path="admin" element={<AdminWrapper />}>
           <Route path="add-event" element={<AddEvent />} />
+          <Route path="add-student" element={<AddStudent />} />
           <Route path="reward-student" element={<RewardStudent />} />
           <Route path="transaction-log" element={<TransactionLog />} />
           <Route path="*" element={<div />} />
@@ -29,6 +32,7 @@ function App() {
         </Route>
         <Route path="student" element={<StudentWrapper />}>
           <Route path="view-profile" element={<Profile />} />
+          <Route path="send-tokens" element={<SendTokens />} />
           <Route path="browse-opportunities" element={<BrowseOpportunities />} />
           <Route path="transaction-log" element={<TransactionLog />} />
           <Route index element={<Navigate to="/student/view-profile" />} />

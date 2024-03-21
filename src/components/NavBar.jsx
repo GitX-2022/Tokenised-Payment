@@ -8,7 +8,7 @@ const NavBar = ({ options }) => {
   const [conn, setConn] = useState("Connect Wallet");
 
   const connectWallet = async () => {
-    let accounts = await window.ethereum
+    let accounts = await window?.ethereum
       .request({ method: "eth_requestAccounts" })
       .catch((err) => {
         console.log(err.code);
